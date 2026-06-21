@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio & Speech Sync Editor</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Wavesurfer JS -->
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Sync & Edit</h1>
+        <p>Perfectly align text with your audio and export with captions.</p>
+    </header>
+
+    <div class="container">
+        <!-- Upload Section -->
+        <label for="audioUpload" class="upload-section" id="dropZone">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); margin-bottom: 1rem;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <h2>Drop audio file here or click to upload</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem; font-size: 0.9rem;">Supports MP3, WAV, M4A</p>
+            <input type="file" id="audioUpload" accept="audio/*">
+        </label>
+
+        <!-- Waveform Section (Hidden initially) -->
+        <div class="waveform-container" id="waveform"></div>
+
+        <!-- Controls Section -->
+        <div class="controls" id="controls" style="display: none;">
+            <div class="controls-group">
+                <button class="btn" id="playBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Play
+                </button>
+                <button class="btn" id="transcribeBtn">
+                    <div class="loader" id="transcribeLoader"></div>
+                    <span>Transcribe & Align</span>
+                </button>
+            </div>
+            
+            <div class="controls-group">
+                <select id="exportFormat" class="select-format">
+                    <option value="mp3">MP3 (with embedded lyrics)</option>
+                    <option value="wav">WAV (with SRT/VTT file)</option>
+                </select>
+                <button class="btn btn-accent" id="exportBtn" disabled>
+                    <div class="loader" id="exportLoader"></div>
+                    <span>Export Audio & Captions</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Transcription Panel -->
+        <div class="transcription-panel" id="transcriptionPanel">
+            <!-- Words will be injected here -->
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
