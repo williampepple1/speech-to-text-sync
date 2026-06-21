@@ -142,7 +142,15 @@ async function handleFileUpload(file) {
 }
 
 // ── Playback ─────────────────────────────────────────────────────────────────
-playBtn.addEventListener('click', () => { if (wavesurfer) wavesurfer.playPause(); });
+playBtn.addEventListener('click', () => {
+    if (!wavesurfer) return;
+    // If a region is selected and audio is paused, seek to the region's start
+    if (selectedRegionId && !wavesurfer.isPlaying()) {
+        const data = trimRegions.get(selectedRegionId);
+        if (data) wavesurfer.setTime(data.wsRegion.start);
+    }
+    wavesurfer.playPause();
+});
 
 // ── Add Trim Region ──────────────────────────────────────────────────────────
 addTrimRegionBtn.addEventListener('click', () => {
@@ -248,7 +256,7 @@ function showDetailPanel(data) {
 
     regionNameInput.value = data.name;
     manualTextInput.value = data.words.map(w => w.word).join(' ');
-    exportBtn.disabled = data.words.length === 0;
+    exportBtn.disabled = false; // Always allow export — words are optional
     renderWordsForRegion(selectedRegionId);
 }
 
@@ -350,9 +358,10 @@ exportBtn.addEventListener('click', async () => {
         });
         const result = await res.json();
         if (result.download_url) {
+            const regionName = (data.name || 'region').replace(/[^a-z0-9_\-\s]/gi, '').trim() || 'region';
             const a = document.createElement('a');
             a.href = result.download_url;
-            a.download = '';
+            a.download = `${regionName}.zip`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -399,7 +408,7 @@ exportAllBtn.addEventListener('click', async () => {
         if (result.download_url) {
             const a = document.createElement('a');
             a.href = result.download_url;
-            a.download = '';
+            a.download = 'all-regions.zip';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);

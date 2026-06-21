@@ -127,7 +127,9 @@ async def export_audio(req: ExportRequest):
 
     if req.export_format == "mp3":
         embed_sylt_mp3(output_audio_path, adjusted_words)
-        files_to_return.append(output_audio_path)
+
+    # Always include the trimmed audio in the ZIP (MP3 or WAV)
+    files_to_return.append(output_audio_path)
 
     srt_path = os.path.join("exports", f"{file_id}.srt")
     vtt_path = os.path.join("exports", f"{file_id}.vtt")
