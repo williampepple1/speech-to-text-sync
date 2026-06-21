@@ -54,6 +54,23 @@ A powerful, local-first web application that allows you to transcribe audio, vis
    - **Edit**: Adjust the blue regions on the waveform to fix any slight misalignment of specific words. Drag the purple master region to define the start and end of the audio you want to export.
    - **Export**: Choose your desired format (MP3 or WAV) and click Export. You will download a ZIP file containing the trimmed audio and its accompanying synchronized text files.
 
+## Docker Usage
+
+You can also run the application using Docker to avoid manual dependency setup.
+
+1. **Build the Docker Image:**
+   ```cmd
+   docker build -t speech-to-text-sync .
+   ```
+
+2. **Run the Container:**
+   ```cmd
+   docker run -p 8000:8000 speech-to-text-sync
+   ```
+
+3. **Open the App:**
+   Navigate to [http://localhost:8000](http://localhost:8000) in your web browser.
+
 ## Technologies Used
 
 - **Backend**: Python, FastAPI, Uvicorn
