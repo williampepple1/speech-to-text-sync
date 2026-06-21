@@ -350,7 +350,12 @@ exportBtn.addEventListener('click', async () => {
         });
         const result = await res.json();
         if (result.download_url) {
-            window.location.href = result.download_url;
+            const a = document.createElement('a');
+            a.href = result.download_url;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         } else {
             alert('Export failed: No download URL');
         }
@@ -392,7 +397,12 @@ exportAllBtn.addEventListener('click', async () => {
         });
         const result = await res.json();
         if (result.download_url) {
-            window.location.href = result.download_url;
+            const a = document.createElement('a');
+            a.href = result.download_url;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         } else {
             alert('Export failed: No download URL');
         }
