@@ -3,9 +3,9 @@ const fileInput = document.getElementById('audioUpload');
 const waveformContainer = document.getElementById('waveform');
 const controls = document.getElementById('controls');
 const playBtn = document.getElementById('playBtn');
-const transcribeBtn = document.getElementById('transcribeBtn');
+const generateRegionsBtn = document.getElementById('generateRegionsBtn');
+const manualTextInput = document.getElementById('manualTextInput');
 const exportBtn = document.getElementById('exportBtn');
-const transcribeLoader = document.getElementById('transcribeLoader');
 const exportLoader = document.getElementById('exportLoader');
 const transcriptionPanel = document.getElementById('transcriptionPanel');
 const exportFormat = document.getElementById('exportFormat');
@@ -131,37 +131,33 @@ playBtn.addEventListener('click', () => {
     }
 });
 
-transcribeBtn.addEventListener('click', async () => {
+generateRegionsBtn.addEventListener('click', () => {
     if (!currentFilepath) return;
     
-    transcribeBtn.disabled = true;
-    transcribeLoader.style.display = 'block';
-    transcribeBtn.querySelector('span').innerText = 'Transcribing...';
-    
-    const formData = new FormData();
-    formData.append('filepath', currentFilepath);
-    
-    try {
-        const res = await fetch('/transcribe', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
-        
-        wordData = data.words || [];
-        renderWords();
-        renderRegions();
-        
-        exportBtn.disabled = false;
-        
-    } catch (err) {
-        console.error(err);
-        alert('Transcription failed');
-    } finally {
-        transcribeBtn.disabled = false;
-        transcribeLoader.style.display = 'none';
-        transcribeBtn.querySelector('span').innerText = 'Transcribe & Align';
+    const text = manualTextInput.value.trim();
+    if (!text) {
+        alert('Please enter some text first.');
+        return;
     }
+    
+    const words = text.split(/\s+/);
+    wordData = [];
+    
+    let currentStart = 0;
+    
+    words.forEach((w) => {
+        wordData.push({
+            word: w,
+            start: currentStart,
+            end: currentStart + 0.5
+        });
+        currentStart += 0.6; // 0.1s gap between default blocks
+    });
+    
+    renderWords();
+    renderRegions();
+    
+    exportBtn.disabled = false;
 });
 
 function renderWords() {

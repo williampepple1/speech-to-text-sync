@@ -4,7 +4,7 @@ A powerful, local-first web application that allows you to transcribe audio, vis
 
 ## Features
 
-- **Accurate Transcription**: Powered by `faster-whisper` for fast, highly accurate word-level timestamping.
+- **Manual Text Alignment**: Paste your text to generate interactive word regions on the waveform.
 - **Visual Audio Editor**: Utilizes `wavesurfer.js` to display an interactive audio waveform.
 - **Word-Level Alignment**: Each transcribed word creates an interactive region on the waveform, allowing you to drag and fine-tune exactly when a word starts and ends.
 - **Audio Trimming**: Create a master region to easily cut out a specific segment of the audio.
@@ -50,7 +50,7 @@ A powerful, local-first web application that allows you to transcribe audio, vis
 
 3. **Workflow:**
    - **Upload**: Drag and drop an audio file (MP3, WAV, M4A).
-   - **Transcribe**: Click "Transcribe & Align" to let Whisper process the audio.
+   - **Align Words**: Paste your text in the text area and click "Generate Word Regions".
    - **Edit**: Adjust the blue regions on the waveform to fix any slight misalignment of specific words. Drag the purple master region to define the start and end of the audio you want to export.
    - **Export**: Choose your desired format (MP3 or WAV) and click Export. You will download a ZIP file containing the trimmed audio and its accompanying synchronized text files.
 
@@ -75,5 +75,5 @@ You can also run the application using Docker to avoid manual dependency setup.
 
 - **Backend**: Python, FastAPI, Uvicorn
 - **Audio Processing**: Pydub, Mutagen (for ID3 SYLT tags)
-- **Machine Learning**: Faster-Whisper (runs locally on CPU)
+
 - **Frontend**: Vanilla HTML/CSS/JS, Wavesurfer.js (v7)

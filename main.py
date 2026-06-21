@@ -9,8 +9,6 @@ from pydantic import BaseModel
 from typing import List
 import uuid
 
-# Whisper
-from faster_whisper import WhisperModel
 
 # Utilities
 from utils.audio import cut_audio
@@ -30,10 +28,6 @@ app.add_middleware(
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("exports", exist_ok=True)
 
-# Load Whisper model on CPU as requested
-print("Loading faster-whisper model...")
-model = WhisperModel("base", device="cpu", compute_type="int8")
-print("Model loaded.")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -54,25 +48,6 @@ async def upload_audio(file: UploadFile = File(...)):
         
     return {"file_id": file_id, "filename": filename, "filepath": filepath}
 
-@app.post("/transcribe")
-async def transcribe_audio(filepath: str = Form(...)):
-    if not os.path.exists(filepath):
-        return JSONResponse(status_code=404, content={"error": "File not found"})
-    
-    # Transcribe with word-level timestamps
-    segments, info = model.transcribe(filepath, word_timestamps=True)
-    
-    words_data = []
-    for segment in segments:
-        for word in segment.words:
-            words_data.append({
-                "word": word.word.strip(),
-                "start": word.start,
-                "end": word.end,
-                "probability": word.probability
-            })
-            
-    return {"words": words_data}
 
 class ExportRequest(BaseModel):
     filepath: str
