@@ -31,36 +31,62 @@
         <!-- Waveform Section (Hidden initially) -->
         <div class="waveform-container" id="waveform"></div>
 
-        <!-- Controls Section -->
+        <!-- Top Controls: Play + Add Trim Region -->
         <div class="controls" id="controls" style="display: none;">
             <div class="controls-group">
                 <button class="btn" id="playBtn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                     Play
                 </button>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-left: 1rem;">
-                    <textarea id="manualTextInput" placeholder="Type or paste your text here..." style="width: 300px; height: 60px; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); resize: vertical;"></textarea>
-                    <button class="btn" id="generateRegionsBtn">
-                        <span>Generate Word Regions</span>
-                    </button>
-                </div>
+                <button class="btn" id="addTrimRegionBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Trim Region
+                </button>
             </div>
-            
             <div class="controls-group">
-                <select id="exportFormat" class="select-format">
-                    <option value="mp3">MP3 (with embedded lyrics)</option>
-                    <option value="wav">WAV (with SRT/VTT file)</option>
-                </select>
-                <button class="btn btn-accent" id="exportBtn" disabled>
-                    <div class="loader" id="exportLoader"></div>
-                    <span>Export Audio & Captions</span>
+                <button class="btn btn-accent" id="exportAllBtn" disabled>
+                    <div class="loader" id="exportAllLoader"></div>
+                    <span>Export All Regions</span>
                 </button>
             </div>
         </div>
 
-        <!-- Transcription Panel -->
-        <div class="transcription-panel" id="transcriptionPanel">
-            <!-- Words will be injected here -->
+        <!-- Two-column layout: Region List + Selected Region Detail -->
+        <div class="editor-layout" id="editorLayout" style="display: none;">
+            <!-- Left: Region List -->
+            <div class="region-list-panel">
+                <h3 class="panel-title">Trim Regions</h3>
+                <div id="regionList">
+                    <p class="empty-hint">Click "Add Trim Region" to start.</p>
+                </div>
+            </div>
+
+            <!-- Right: Selected Region Detail -->
+            <div class="region-detail-panel" id="regionDetailPanel">
+                <div class="detail-placeholder" id="detailPlaceholder">
+                    <p>Select a region to edit its text and alignment.</p>
+                </div>
+                <div id="detailContent" style="display: none;">
+                    <div class="detail-header">
+                        <input type="text" id="regionNameInput" class="region-name-input" placeholder="Region name..." />
+                    </div>
+                    <textarea id="manualTextInput" placeholder="Type or paste words for this region..." class="region-textarea"></textarea>
+                    <button class="btn" id="generateRegionsBtn" style="width: 100%;">
+                        <span>Generate Word Regions</span>
+                    </button>
+                    <div class="transcription-panel" id="transcriptionPanel"></div>
+                    <div class="detail-footer">
+                        <select id="exportFormat" class="select-format">
+                            <option value="mp3">MP3 (with embedded lyrics)</option>
+                            <option value="wav">WAV (with SRT/VTT file)</option>
+                        </select>
+                        <button class="btn btn-accent" id="exportBtn" disabled>
+                            <div class="loader" id="exportLoader"></div>
+                            <span>Export This Region</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
